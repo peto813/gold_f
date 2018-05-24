@@ -1,0 +1,81 @@
+<form (ngSubmit)="onSubmit()" #massMelt="ngForm" class="form-horizontal" role="form" enctype="multipart/form-data">
+
+    <div class="modal-header">
+      <h4 class="modal-title" style="margin:0 auto;">Fundicion por lotes</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				   <select class="form-control" [(ngModel)]="model.currency" #currency="ngModel" name="currency">
+					   	<option value="bs">Bs</option>
+				   		<option value="rs">Rs</option>
+				   		<option value="usd">Usd</option>
+				   </select>
+				  </div>
+				  <input min="0" type="number" class="form-control" [(ngModel)]="model.precio" #precio="ngModel"  name="precio" placeholder="Costo total de fundicion" aria-label="precioUnitario" aria-describedby="basic-addon1" required>
+
+				</div> 
+				<div [hidden]="precio.valid || precio.pristine"
+				     class="alert alert-danger">
+				  Ingrese precio
+				</div>      		
+         	</div>
+
+			<div class="input-group mb-3">
+			  <input type="number" [(ngModel)]="model.pesoPost" #pesoPost="ngModel" name="pesoPost" class="form-control"  placeholder="Peso despues de fundicion" id="basic-url" aria-describedby="basic-addon3">
+				<div class="input-group-append">
+					   <select  class="form-control" name="weightUnit" [(ngModel)]="model.weightUnit" #weightUnit="ngModel">
+					   		<option value="gr">gr</option>
+					   		<option value="oz">oz</option>
+					   </select>
+				</div>
+			</div>
+
+
+<div style="margin-bottom: 15px;font-size: 0.9em;">
+	<code><b>Nota: </b>Cualquier elemento seleccionado qua ya ha sido fundido  ha sido filtrado de esta lista.</code>
+</div>
+<div class="table-responsive-lg">
+	<table class="table table-bordered table-striped text-center">
+	  <thead>
+	    <tr>
+	      	<th scope="col">ID</th>
+	      	<th scope="col">Cantidad</th>
+	      	<th scope="col">Costo</th>
+	      	<th scope="col">Remanente</th>
+	    </tr>
+	    <tr class="table-warning" style="font-size:0.75em;">
+	    	<th>Total</th>
+	    	<th>{{sumCantidad()| number : '1.2-2'}} {{model.weightUnit}}</th>
+	    	<th>{{headerPriceTotal()}}</th>
+	    	<th>{{model.pesoPost}} <span *ngIf="model.pesoPost">{{model.weightUnit}}</span></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+
+	<tr *ngFor="let transaction of model.transacciones">
+			<td>{{transaction.id}}</td>
+	    	<td>{{getCantidad(transaction)| number : '1.2-2'}} {{model.weightUnit}}</td>
+	    	<td>{{costPerTransaction(transaction)}}</td>
+	    	<td>
+	    		{{model.pesoPost*getCantidad(transaction)/sumCantidad()| number : '1.2-2'}}  
+	    		<span *ngIf="model.pesoPost">{{model.weightUnit}}</span>
+	    	</td>
+	</tr>
+
+	  </tbody>
+	</table>
+</div>
+
+    </div>
+    <div class="modal-footer">
+		<input type="submit" class="btn btn-primary" [disabled]="!massMelt.form.valid||(!massMelt.form.dirty&&!massMelt.form.touched)" value="Aceptar">
+      	<button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cerrar</button>
+    </div>
+
+</form>
+

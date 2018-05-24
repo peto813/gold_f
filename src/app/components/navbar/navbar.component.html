@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">
+    <!-- Navbar -->
+    <img style="max-height: 70px;" class="img-fluid rounded-circle" src="assets/img/gold.jpg">
+  </a>
+  <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" data-toggle="collapse" [attr.aria-expanded]="!isCollapsed" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink='/dashboard/'>Inicio <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item" *ngIf="restService.isLoggedIn()">
+        <a title="Informacion personal y de la empresa"  class="nav-link" routerLink='/perfil_broker/'>Perfil</a>
+      </li>
+      <li class="nav-item" *ngIf="restService.isLoggedIn()&&userService.getRole()=='owner'">
+        <a title="consultar/agregar/eliminar brokers"  class="nav-link" routerLink='/brokers/'>Brokers</a>
+      </li>
+    </ul>
+
+    
+<!-- 
+      <div class="price-ticker" style="padding-left:20px;margin-right:5px;">
+            <a class="navbar-brand" style="font-size:0.7em;"><b>Oro (Gr)</b><br>USD. {{dolarToday?.GOLD.rate/31.1034768
+ | number : '1.2-2'}}</a>
+      </div>  
+      <div class="price-ticker" style="padding-left:20px;margin-right:5px;">
+            <a class="navbar-brand" style="font-size:0.7em;"><b>Oro (Oz)</b><br>USD. {{dolarToday?.GOLD.rate | number : '1.2-2'}}</a>
+      </div>      
+      <div class="price-ticker" style="padding-left:20px;margin-right:5px;">
+            <a class="navbar-brand" style="font-size:0.7em;"><b>Dolar today</b><br>Bs. {{dolarToday?.USD.transfer_cucuta | number : '1.2-2' }}</a>
+      </div>
+      <div class="price-ticker" style="padding-left:20px;margin-right:5px;">
+            <a class="navbar-brand" style="font-size:0.7em;"><b>Euro</b><br>USD {{dolarToday?.EURUSD.rate | number : '1.2-2' }}</a>
+      </div>
+      <div class="price-ticker" style="padding-left:20px;margin-right:5px;">
+            <a class="navbar-brand" style="font-size:0.7em;"><b>Efectivo Cucuta</b><br>Bs {{dolarToday?.USD.efectivo_cucuta | number : '1.2-2' }}</a>
+      </div> -->
+
+ <a role="button" *ngIf="restService.isLoggedIn()" class="navbar-brand" (click)="restService.logout()" tabindex="0">Salir</a>
+  </div>
+
+</nav>

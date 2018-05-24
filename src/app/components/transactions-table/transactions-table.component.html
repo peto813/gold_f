@@ -1,0 +1,129 @@
+	<div class="row top-row">
+		<div class="col-12 col-sm-12">
+			<h3>Bienvenido(a): {{ restService.getUserData().user.first_name | capitalize}} {{ restService.getUserData().user.last_name | capitalize}}
+      </h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 col-sm-12">
+      <h5 class="text"><b>Empresa: </b>{{userService.getCompanyData().name | capitalizeach }}</h5>
+			<hr>
+			<p class="text-center"><strong>Desde: {{transactionRange.from|date:'mediumDate'}}</strong> <strong>- Hasta: {{transactionRange.to|date:'mediumDate'}}</strong></p>
+<!-- 			<p><strong>Hasta: {{transactionRange.to|date:'mediumDate'}}</strong></p> -->
+			<hr>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 col-sm-12">
+
+      <div class="btn-toolbar table-control" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+        	<button type="button" class="btn btn-success" (click)="registerPurchase()">Compra</button>
+        	<button type="button" class="btn btn-danger" (click)="sellMass()" [disabled]="anyChecked()==false">Venta</button>
+          <button type="button" class="btn btn-info" (click)="fundirMass(transactions)" [disabled]="anyChecked()==false">Fundir</button>
+          <button type="button" class="btn btn-info" (click)="analisisMass()" [disabled]="anyChecked()==false">Analisis</button>
+      <!--     <button type="button" class="btn btn-secondary">3</button>
+          <button type="button" class="btn btn-secondary">4</button> -->
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+          <form (ngSubmit)="searchDates()" #searchDatesForm="ngForm" class="form-inline my-2 my-lg-0">
+        	<select class="form-control" name="searchCriteria" [(ngModel)]="searchCriteria">
+      <!--   		<option value="">Buscar</option> -->
+        		<option value="mes">Ultimo mes</option>
+        		<option value="semana">Ultima semana</option>
+        		<option value="dia">Ultimo dia</option>
+        		<option value="fechas">Por Fechas</option>
+        	</select>
+            <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
+            <button type="submit" class="btn btn-outline-info my-2 my-sm-0">Buscar</button>
+          </form>
+      <!--   	<select class="form-control">
+        		<option value="">Buscar</option>
+        		<option value="mes">Ultimo mes</option>
+        		<option value="semana">Ultima semana</option>
+        		<option value="dia">Ultimo dia</option>
+        		<option value="fechas">Por Fechas</option>
+        	</select> -->
+<!--         	<button class="btn btn-sm btn-info" type="button">Ok</button>
+          <button type="button" class="btn btn-light">Ultimo mes</button>
+          <button type="button" class="btn btn-light">Ultima semana</button>
+          <button type="button" class="btn btn-light">Ultimo dia</button> -->
+        </div>
+        <div class="input-group-text legendDiv">
+          <span><i class="fas fa-fire"></i>   Muestra fundida</span>
+        </div>
+        <div class="input-group-text legendDiv">
+          <span><i class="fas fa-certificate"></i>  Muestra con legalidad</span>
+        </div>
+<!--           <div class="btn-group mr-2 legendDiv" role="group" aria-label="Second group">
+            <p><i class="fas fa-fire"></i> = Muestra fundida</p>
+          </div>
+          <div class="btn-group mr-2 legendDiv" role="group" aria-label="Second group">
+            <p><i class="fas fa-certificate"></i> = Muestra con legalidad</p>
+          </div> -->
+
+      <!--   <div class="btn-group" role="group" aria-label="Third group">
+          <button type="button" class="btn btn-default">Por Fechas</button>
+        </div> -->
+      </div>
+
+
+<div class="table-responsive-lg">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+    	  <th>-</th>
+        <th>ID</th>
+      	<th>Acccion</th>
+      	<th>Fecha</th>
+      	<th>Tipo</th>
+        <th>Cantidad</th>
+      	<th>Monto</th>
+    <!--   	<th scope="col">D/C<th> -->
+    	  <th>D/C</th>
+      	<th>Balance Oro</th>
+    </tr>
+  </thead>
+  <tbody>
+
+<tr [ngClass]="{'table-warning': (transaction.tipo==='abono' && transaction.approved===null),'table-success': (transaction.tipo==='abono' && transaction.approved===true), 'table-danger': (transaction.tipo==='abono' && transaction.approved===false)}" 
+*ngFor="let transaction of table_data">
+    	<td>
+    		<input type="checkbox" *ngIf="transaction.tipo=='compra'" name="cbx_{{transaction.id}}" [(ngModel)]="transaction.checked" #cbx_{{transaction.id}}="ngModel">
+    	</td>
+      <td>{{transaction.id}}</td>
+    	<td>
+		    <div ngbDropdown class="d-inline-block">
+		      <span ngbDropdownToggle><i title="Accion" class="fas fa-cog fa-2x"></i></span>
+		      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <!--COMPRAS/VENTAS-->
+		      	<button class="dropdown-item" (click)="transactionDetails(transaction)">Detalles</button>
+		        <button class="dropdown-item" *ngIf="transaction.can_be_sold==true" (click)="fundir(transaction)">Fundir/Analizar</button>
+		        <button class="dropdown-item" (click)="sell(transaction)" *ngIf="transaction.can_be_sold==true">Vender</button>
+                  <!--ABONOS-->
+            <button class="dropdown-item" (click)="approveFunds(transaction)" *ngIf="isAbono(transaction)">Aprobar</button>
+            <button class="dropdown-item btn-danger" (click)="rejectFunds(transaction)" *ngIf="isAbono(transaction)">Rechazar</button>
+		      </div>
+		    </div>  		
+    	</td>
+    	<td>{{transaction.created | date:'mediumDate'}}</td>
+    	<td>{{transaction.tipo | capitalize}}
+        <span *ngIf="transaction.tipo==='compra'&&transaction.fundido===true">
+          <i class="fas fa-fire"></i>
+        </span>
+        <span *ngIf="transaction.tipo==='compra'&&transaction.legal===true">
+          <i class="fas fa-certificate"></i>
+        </span>
+      </td>
+      <td [colSpan]="getSpan(transaction)">{{transaction.precio | number : '1.2-2'}} {{transaction.account.account_type?.currency_nick | capitalize}}</td>
+    	<td *ngIf="transaction.tipo!=='abono'">{{transaction.currency | capitalize}} {{transaction.precio*(transaction.cantidad | weightConvert: 'gr' : transaction.weightUnit) | number : '1.2-2'}}</td>
+    	<td *ngIf="transaction.tipo!=='abono'"><strong>{{getSign(transaction)}}</strong></td>
+    	<td *ngIf="transaction.tipo!=='abono'">{{transaction.balance}} gr</td>
+</tr>
+
+  </tbody>
+</table>
+</div>
+		</div>
+	</div>
+

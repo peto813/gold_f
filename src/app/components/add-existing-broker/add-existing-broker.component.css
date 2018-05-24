@@ -1,0 +1,9 @@
+.table, th, td{
+	text-align: center;
+}
+.table-control{
+	margin-bottom: 15px;
+}
+input[type="text"]{
+	text-align: center;
+}

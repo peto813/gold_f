@@ -1,0 +1,217 @@
+	
+    <form  (ngSubmit)="onSubmit()" #addBrokerForm="ngForm" class="form-horizontal" role="form" >
+    			<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        			<span aria-hidden="true">&times;</span>
+      			</button>
+    		<div class="modal-header">
+    			<h3 class="modal-title">Registre Broker</h3>
+
+    		</div>
+
+<div class="modal-body">
+ 			<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+
+				  </div>
+				<input [ngModelOptions]="{updateOn: 'blur'}" type="text" [(ngModel)]="model.username" #username="ngModel" class="form-control" name="username" appForbiddenName placeholder="Usuario"  required>
+				</div> 
+				<div *ngIf="username?.errors" class="errorField">
+					<div *ngIf="username.errors.required && username.touched"
+						 class="alert alert-danger errorMsg">
+						Ingrese usuario
+					</div>
+					<div *ngIf="username.errors.userExists && username.touched"
+						 class="alert alert-danger errorMsg">
+						Usuario invalido
+					</div>
+				</div>    		
+         	</div>
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+
+				  </div>
+				<input appForbiddenEmail type="email" [ngModelOptions]="{updateOn: 'blur'}" [(ngModel)]="model.email" #email="ngModel" class="form-control" name="email" placeholder="Correo Electronico"  required>
+				</div>
+				<div *ngIf="email?.errors" class="errorField">
+					<div *ngIf="email.errors.required && email.touched"
+						 class="alert alert-danger errorMsg">
+						Ingrese correo Electronico
+					</div>
+					<div *ngIf="email.errors.email && email.touched" class="alert alert-danger errorMsg">
+						Correo Electronico invalido
+					</div>
+					<div *ngIf="email.touched && email.errors.emailExists" class="alert alert-danger errorMsg">
+						Correo no disponible.
+					</div> 
+				</div>
+         	</div>
+
+	 	<div class="form-group">
+			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+
+			  </div>
+			<input type="text" [(ngModel)]="model.first_name" #first_name="ngModel" class="form-control" name="first_name" placeholder="Nombres"  required>
+			</div>
+			<div *ngIf="first_name?.errors" class="errorField">
+				<div *ngIf="first_name.errors.required && first_name.touched"
+					 class="alert alert-danger errorMsg">
+					Ingrese nombres.
+				</div>		
+			</div>
+	 	</div>
+
+	 	<div class="form-group">
+			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+
+			  </div>
+			<input type="text" [(ngModel)]="model.last_name" #last_name="ngModel" class="form-control" name="last_name" placeholder="Apellidos"  required>
+			</div>
+			<div *ngIf="last_name?.errors" class="errorField">
+				<div *ngIf="last_name.errors.required && last_name.touched"
+					 class="alert alert-danger errorMsg">
+					Ingrese correo apellidos.
+				</div>		
+			</div>
+	 	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+	
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input type="password" minlength="8" [(ngModel)]="model.password1" validateEqual="password2" reverse="true" #password1="ngModel" class="form-control" name="password1" placeholder="Contraseña"  required>
+
+				</div>
+				<div *ngIf="password1?.errors" class="errorField">
+					<div *ngIf="password1.errors.required && password1.touched"
+						 class="alert alert-danger errorMsg">
+						Ingrese contraseña
+					</div>
+					<div *ngIf="password1.errors.minlength && password1.touched"
+						 class="alert alert-danger errorMsg">
+						Minimo 8 caracteres
+					</div>						
+				</div>    		
+         	</div>
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input type="password" validateEqual="password1" [(ngModel)]="model.password2" #password2="ngModel" class="form-control" name="password2" placeholder="Confirmar contraseña"  required>
+				</div>
+				    <div *ngIf="password2?.errors && password2.touched" class="alert alert-danger errorMsg">
+				        Contraseña no coincide
+				    </div>   		
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input type="text" [(ngModel)]="model.location" #location="ngModel" class="form-control" name="location" placeholder="Ubicacion">
+				</div>     		
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input appForbiddenCedula [ngModelOptions]="{updateOn: 'blur'}" type="text" [(ngModel)]="model.id_number" #id_number="ngModel" class="form-control" name="id_number" placeholder="Cedula"  required>
+				</div>
+				<div *ngIf="id_number?.errors" class="errorField">
+					<div *ngIf="id_number.errors.required && id_number.touched"
+						 class="alert alert-danger errorMsg">
+						Ingrese cedula
+					</div>
+					<div *ngIf="id_number.errors.cedulaExists && id_number.touched"
+						 class="alert alert-danger errorMsg">
+						Cedula no disponible
+					</div>				
+				</div>      		
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input type="text" [(ngModel)]="model.mobile" #mobile="ngModel" class="form-control" name="mobile" [pattern] ="pattern" placeholder="Celular">
+				</div>
+				<div *ngIf="mobile?.errors" class="errorField">
+					<div *ngIf="mobile.errors.pattern && mobile.touched"
+						 class="alert alert-danger errorMsg">
+						Numero invalido
+					</div>
+					
+				</div>  		
+         	</div>
+
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input type="text" [(ngModel)]="model.office" #office="ngModel" class="form-control" name="office" placeholder="Oficina" [pattern] ="pattern">
+				</div>
+				<div *ngIf="office?.errors" class="errorField">
+					<div *ngIf="office.errors.pattern && office.touched"
+						 class="alert alert-danger errorMsg">
+						Numero invalido
+					</div>
+					
+				</div>     		
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input [pattern] ="pattern" type="text" [(ngModel)]="model.other" #other="ngModel" class="form-control" name="other" placeholder="Otro">
+				</div>
+				<div *ngIf="office?.errors" class="errorField">
+					<div *ngIf="office.errors.pattern && office.touched"
+						 class="alert alert-danger errorMsg">
+						Numero invalido
+					</div>
+					
+				</div>     		   		
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input type="number" customMin="0" [(ngModel)]="model.gold_balance" #gold_balance="ngModel" class="form-control" name="gold_balance" placeholder="Balance de oro inicial"  required>
+				</div>
+				<div *ngIf="gold_balance?.errors" class="errorField">
+					<div *ngIf="gold_balance.errors.required && gold_balance.touched"
+						 class="alert alert-danger errorMsg">
+						Ingrese el balance inicial del broker.
+					</div>
+					<div *ngIf="gold_balance.errors.customMin && gold_balance.touched"
+						 class="alert alert-danger errorMsg">
+						Valor minimo es Cero
+					</div>
+					
+				</div>	
+         	</div>
+		
+</div>
+
+        <div class="modal-footer">
+        	<input [disabled]="!addBrokerForm.form.valid&&submitted==false" type="submit" class="btn btn-primary float-sm-right btn-lg" value="Aceptar">
+        	<button type="button" class="btn btn-outline-dark btn-lg" (click)="activeModal.close()">Cerrar</button>
+        </div>
+    </form>
+

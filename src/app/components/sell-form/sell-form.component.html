@@ -1,0 +1,141 @@
+	<form (ngSubmit)="onSubmit()" #sellForm="ngForm" class="form-horizontal" role="form" enctype="multipart/form-data">
+	    <div class="modal-header">
+	      <h4 class="modal-title text-center">Registrar venta</h4>
+	      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+	        <span aria-hidden="true">&times;</span>
+	      </button>
+	    </div>
+	    <div class="modal-body">
+<!-- 	    	<label><strong>Cantidad:</strong>  {{modalData.pesoPost||modalData.cantidad | number : '1.2-2'}} {{modalData.weightUnit}}</label> -->
+
+
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+					   <select class="form-control" name="weightUnit" [(ngModel)]="model.weightUnit" #weightUnit="ngModel">
+					   		<option value="gr">gr</option>
+					   		<option value="oz">Oz</option>
+					   		<option value="kg">Kg</option>
+					   </select>
+				  </div>
+
+				<input disabled type="number" [ngModel]="model.cantidad | weightConvert :'gr': model.weightUnit | number : '1.2-4'" #cantidad="ngModel" customMin="0" class="form-control" name="cantidad" placeholder="Cantidad" aria-label="Cantidad" aria-describedby="basic-addon1" required>
+				</div> 
+
+				<div *ngIf="cantidad?.errors && cantidad.errors.required && cantidad.touched"
+					 class="alert alert-danger errorMsg">
+					Ingrese peso despues de fundicion.
+				</div>
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+<!-- 				   <select class="form-control" [(ngModel)]="model.currency" #currency="ngModel" name="currency">
+				   	<option value="bs">Bs</option>
+				   		<option value="rs">Rs</option>
+				   		<option value="usd">Usd</option>
+				   </select> -->
+				   <select class="form-control" [(ngModel)]="model.account" #account="ngModel" name="account">
+					<option *ngFor="let account of account_types" 
+					    [ngValue]="account">
+					  {{ account.account_type?.currency_nick | capitalize }}
+					</option>
+				   </select>
+				  </div>
+				  <input type="number" class="form-control" [(ngModel)]="model.precio" #precio="ngModel"  name="precio" placeholder="Precio Unitario" aria-label="precioUnitario" aria-describedby="basic-addon1" required>
+
+				</div> 
+				<div [hidden]="precio.valid || precio.pristine"
+				     class="alert alert-danger">
+				  Ingrese precio
+				</div>      		
+			</div>
+			<div *ngIf="purchaseData.account.account_type.currency_nick!=model.account.account_type.currency_nick">
+				<p>Debido a que la venta es en una moneda distinta a la de la compra, por favor ingrese taza de cambio.</p>
+	         	<div class="form-group" >
+					<div class="input-group mb-3">
+					  <input type="number" class="form-control" [(ngModel)]="model.taza" #taza="ngModel"  name="taza" placeholder="Taza {{purchaseData.account.account_type.currency_nick}} / {{model.account.account_type.currency_nick}}" aria-label="precioUnitario" aria-describedby="basic-addon1" required>
+					</div> 
+					<div [hidden]="taza.valid || taza.pristine"
+					     class="alert alert-danger">
+					  Ingrese taza de cambio
+					</div>      		
+				</div>	
+			</div>
+
+
+			<div class="table-responsive-lg" *ngIf="model.account.account_type.currency_nick==purchaseData.account.account_type.currency_nick">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td>
+							<strong>Precio compra:</strong>
+						</td>
+						<td>
+							{{purchaseData.account.account_type.currency_nick | capitalize}} {{ (purchaseData.cantidad | weightConvert :'gr': purchaseData.weightUnit) * purchaseData.precio | number : '1.2-2'}}</td>
+					</tr>
+
+					<tr>
+						<td>
+							<strong>Ganancia/{{model.weightUnit}}:</strong>
+						</td>
+						<td>
+							<div *ngIf="model.precio">
+								{{profitByWeight() | number : '1.2-2'}} {{model.account.account_type.currency_nick}}/{{model.weightUnit}}
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Margen de ganancia:</strong></td>
+						<td>
+							<div *ngIf="model.precio">
+<!-- 							 {{model.currency | capitalize}} {{(model.precio-realPrice)* (model.pesoPost||model.cantidad)| number : '1.2-2'}} --><!-- 
+							{{model.currency | capitalize}}	 {{	( profitByWeight()  * ((model.pesoPost || model.cantidad) | weightConvert : 'gr' : model.weightUnit) ) | number : '1.2-2'}}	 -->
+
+							<!-- {{model.currency | capitalize}}	 {{ ((model.pesoPost || model.cantidad) | weightConvert : 'gr' : model.weightUnit)-((purchaseData.cantidad | weightConvert :'gr': purchaseData.weightUnit) * purchaseData.precio) }}  -->
+
+							{{model.account.account_type.currency_nick | capitalize}} {{ (( model.cantidad | weightConvert :'gr': model.weightUnit ) * model.precio) -((purchaseData.cantidad | weightConvert :'gr': purchaseData.weightUnit) * purchaseData.precio)| number : '1.2-2'}}				
+							</div>
+						</td>
+					</tr>
+<!-- 					<tr>
+						<td><strong>Margen de ganancia:</strong></td>
+						<td>
+							<div *ngIf="model.precio">
+								
+							</div>
+							{{(100*(model.precio-realPrice)/(model.precio||model.pesoPost)) | number : '1.2-2'}} %
+					</td>
+					</tr> -->
+				</table>
+			</div>
+
+
+			<div class="table-responsive-lg" >
+	    		<table class="table table-bordered table-striped">
+						<tr>
+							<td><strong>Total venta:</strong></td>
+							<td>
+								<div *ngIf="model.precio">
+									{{model.account.account_type.currency_nick | capitalize}} {{ (model.cantidad | weightConvert :'gr': model.weightUnit) * model.precio | number : '1.2-2'}}								
+								</div>
+							</td>
+						</tr>  			
+	    		</table>
+	    	</div>
+
+
+
+<!-- 			<hr>
+			<strong>Ganancia/gr:</strong> {{modalData.currency | capitalize}} {{model.precio-realPrice | number : '1.2-2'}}<br>
+			<strong>Ganancia Total:</strong> {{modalData.currency | capitalize}} {{(model.precio-realPrice)* (modalData.pesoPost||modalData.cantidad)| number : '1.2-2'}}<br>
+			<strong>Margen de ganancia:</strong> {{(100*(model.precio-realPrice)/(modalData.precio||modalData.pesoPost)) | number : '1.2-2'}} %
+			<hr> -->
+		</div>
+		<div class="modal-footer">
+			<input type="submit" class="btn btn-primary" [disabled]="!sellForm.form.valid&&submitted==true" value="Aceptar">
+			<button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Cerrar</button>
+		</div>
+    </form>
+

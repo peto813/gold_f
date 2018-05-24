@@ -1,0 +1,40 @@
+	
+    <form  (ngSubmit)="onSubmit()" #balancesForm="ngForm" class="form-horizontal" role="form" >
+    			<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        			<span aria-hidden="true">&times;</span>
+      			</button>
+    		<div class="modal-header">
+    			<h3 style="margin:0 auto;" class="modal-title">Balances</h3>
+
+    		</div>
+
+<div class="modal-body">
+	<div class="table-responsive-lg">
+		<table class="table table-bordered table-striped">
+		  <thead>
+		    <tr>
+		<!--     	<th scope="col">-</th>
+		 -->    
+		 		<th scope="col">Desc.</th>
+		      	<th scope="col">Balance Inicial</th>
+		      	<th scope="col">Balance</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+
+		<tr *ngFor="let account of accounts">
+			<td>{{account.account_type.name | capitalize}}</td>
+			<td>{{account.account_type.currency_nick | capitalize}} {{account.start_balance | number: '1.2-2' }}</td>
+			<td>{{account.account_type.currency_nick | capitalize}} {{account.balance | number: '1.2-2' }}</td>
+		</tr>
+
+		  </tbody>
+		</table>
+	</div>
+</div>
+
+        <div class="modal-footer">
+        	<button type="button" class="btn btn-outline-dark btn-lg" (click)="activeModal.close()">Cerrar</button>
+        </div>
+    </form>
+

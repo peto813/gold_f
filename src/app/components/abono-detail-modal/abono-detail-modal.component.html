@@ -1,0 +1,52 @@
+<div class="modal-header">
+      <h4 class="modal-title" style="margin:0 auto;">Detalles del abono</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+<div class="table-responsive-lg">
+	<table class="table table-bordered table-striped">
+
+	  <tbody class="text-center">
+	  	<tr>
+	  		<td class="bold">ID:</td>
+	  		<td>{{modalData.id}}</td>
+	  	</tr>
+	  	<tr>
+	  		<td class="bold">Estatus:</td>
+	  		<td>{{getStatus()}}</td>
+	  	</tr>
+		<tr>
+			<td class="bold">Fecha:</td>
+			<td>{{modalData.created | date: 'medium'}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Moneda:</td>
+			<td>{{modalData.account.account_type.name | capitalize}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Monto:</td>
+			<td>{{modalData.precio | number: '1.2-2'}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Origen:</td>
+			<td>{{modalData.from_user.first_name | capitalize}} {{modalData.from_user.last_name | capitalize}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Destino:</td>
+			<td>{{modalData.user.first_name | capitalize}} {{modalData.user.last_name | capitalize}}</td>
+		</tr>
+		  </tbody>
+	</table>
+</div>
+
+
+
+
+
+    </div>
+    <div class="modal-footer">
+      	<button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Cerrar</button>
+    </div>

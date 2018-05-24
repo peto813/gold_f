@@ -1,0 +1,74 @@
+{{diagnostic}}
+    <form (ngSubmit)="onSubmit()" #agencyForm="ngForm" class="form-horizontal" role="form" >
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+
+				  </div>
+				  <select [(ngModel)]="model.country" #country="ngModel" name="country" class="form-control" required>
+				  	<option value="">Pais</option>
+				  	<option value="venezuela">Venezuela</option>
+				  </select>
+				</div>
+				<div [hidden]="country.valid || country.pristine"
+				     class="alert alert-danger">
+				  Seleccione un pais
+				</div>   		
+         	</div>
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+
+				  </div>
+				<input [(ngModel)]="model.state" #state="ngModel" name="state" type="text" class="form-control" placeholder="Estado/Provincia" aria-label="Cantidad" aria-describedby="basic-addon1" required>
+				</div>
+				<div [hidden]="state.valid || state.pristine"
+				     class="alert alert-danger">
+				  Ingrese un estado
+				</div>	
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input [(ngModel)]="model.city" #city="ngModel" type="text" name="city" class="form-control" placeholder="Ciudad" aria-label="city" aria-describedby="basic-addon1" required>
+				</div>
+				<div [hidden]="city.valid || city.pristine"
+				     class="alert alert-danger">
+				  Ingrese su contraseña
+				</div>
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input [(ngModel)]="model.address" #address="ngModel" name="address" type="text" class="form-control" placeholder="Direccion" aria-label="Cantidad" aria-describedby="basic-addon1" required>
+				</div> 
+				<div [hidden]="address.valid || address.pristine"
+				     class="alert alert-danger">
+				  Ingrese la direccion
+				</div>   		
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 				  <div class="input-group-prepend">
+
+				  </div> -->
+				<input [(ngModel)]="model.zip" #zip="ngModel" name="zip" type="text" class="form-control" placeholder="Codigo postal" aria-label="Cantidad" aria-describedby="basic-addon1">
+				</div>
+<!-- 				<div [hidden]="zip.valid || zip.pristine"
+				     class="alert alert-danger">
+				  Ingrese la direccion
+				</div>   -->	
+         	</div>
+
+
+		<input type="submit" class="btn btn-primary" [disabled]="!agencyForm.form.valid" value="Aceptar" >
+    </form>
+

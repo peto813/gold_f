@@ -1,0 +1,83 @@
+<!-- {{diagnostic}} -->
+         <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="form-horizontal" role="form">
+            <div class="row" style="margin-bottom: 15px;">
+                    <h2>Por favor ingrese</h2>
+                    <hr>
+            </div>
+<!--          	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+
+				  </div>
+				<input type="text" class="form-control" placeholder="Apellidos" aria-label="Cantidad" aria-describedby="basic-addon1">
+				</div>     		
+         	</div> -->
+         	<div class="form-group">
+         		<label class="sr-only" for="username">Usuario</label>
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+				  </div>
+				  <input type="text" [(ngModel)]="model.username" name="username" class="form-control" placeholder="Usuario" aria-label="Username" aria-describedby="basic-addon1" #username="ngModel" required>
+				</div>
+				<div [hidden]="username.valid || username.pristine"
+				     class="alert alert-danger">
+				  Ingrese su usuario
+				</div>
+			</div>
+
+         	<div class="form-group">
+         		<label class="sr-only" for="password">Contraseña</label>
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
+				  </div>
+				  <input type="password" [(ngModel)]="model.password" name="password" class="form-control" placeholder="Contraseña" aria-label="Contraseña" aria-describedby="basic-addon1" #password="ngModel" required>
+				</div>
+				<div [hidden]="password.valid || password.pristine"
+				     class="alert alert-danger">
+				  Ingrese su contraseña
+				</div>
+			</div>
+
+
+<!--             <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="sr-only" for="password">Password</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend"><i class="fa fa-key"></i></div>
+                            <input type="password" name="password" class="form-control" id="password"
+                                   placeholder="Contraseña" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                        </span>
+                    </div>
+                </div>
+            </div> -->
+
+
+            <div class="row">
+                <div>
+                    <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+                        <label class="form-check-label">
+                            <input class="form-check-input" name="remember"
+                                   type="checkbox" [(ngModel)]="model.remember">
+                            <span style="padding-bottom: .15rem">Recuerdame</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <button [disabled]="!loginForm.form.valid||submitted==true" type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> Ingresar</button>
+                    <a class="btn btn-link" routerLink='/forgot_password/'>¿Olvido Contraseña?</a>
+                </div>
+            </div>
+        </form>
+

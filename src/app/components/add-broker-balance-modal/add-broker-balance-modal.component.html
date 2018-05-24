@@ -1,0 +1,47 @@
+	
+    <form  (ngSubmit)="onSubmit()" #addBalancesForm="ngForm" class="form-horizontal" role="form" >
+    			<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        			<span aria-hidden="true">&times;</span>
+      			</button>
+    		<div class="modal-header">
+    			<h3 style="margin:0 auto;" class="modal-title">Agregar Balance</h3>
+    		</div>
+
+	<div class="modal-body">
+	    		<h6 class="text-center">{{broker.first_name | capitalize}} {{broker.last_name | capitalize}}</h6>
+	  			<div class="form-group">
+					<div class="input-group mb-3">
+					  <div class="input-group-prepend">
+						   <select class="form-control" name="account" [(ngModel)]="model.account" #account="ngModel" required>
+						   		<option value="">Cuenta</option>
+								<option *ngFor="let account of accounts" 
+								    [value]="account.id" >
+								  {{ account.account_type.currency_nick | capitalize }}
+								</option>
+						   </select>
+					  </div>
+					<input type="number" [min]=0 customMin="0" [(ngModel)]="model.precio" #precio="ngModel" class="form-control" name="precio" placeholder="Monto a abonar" required>
+					</div> 
+					<div *ngIf="precio?.errors" class="errorField">
+						<div *ngIf="precio.errors.required && precio.touched"
+							 class="alert alert-danger errorMsg">
+							Ingrese monto.
+						</div>
+						<div *ngIf="precio.errors.customMin && precio.touched"
+							 class="alert alert-danger errorMsg">
+							Solo valores positivos.
+						</div>
+					</div>  		
+	         	</div>
+<!-- 	    {{model|json}}
+	    {{broker|json}}
+	    {{role|json}}
+	    {{accounts|json}} -->
+	</div>
+
+        <div class="modal-footer">
+        	<input [disabled]="!addBalancesForm.form.valid&&submitted==false" type="submit" class="btn btn-primary float-sm-right btn-lg" value="Aceptar">
+        	<button type="button" class="btn btn-outline-dark btn-lg" (click)="activeModal.close()">Cerrar</button>
+        </div>
+    </form>
+

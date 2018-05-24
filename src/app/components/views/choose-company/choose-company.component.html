@@ -1,0 +1,29 @@
+	<form (ngSubmit)="onSubmit()" #chooseCompanyForm="ngForm" class="form-horizontal" role="form">
+		<div class="chooseCompanyForm align-middle">
+	      <h4 style="margin-bottom: 15px;">Seleccione una empresa</h4>
+	      <hr>
+         	<div class="form-group">
+
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+
+				  </div>
+					   <select class="form-control" name="id" [(ngModel)]="model.id" #id="ngModel">
+					   		<option value="">Empresa</option>
+					   		<option *ngFor="let company of companies" [ngValue]="company.id">{{company.name |capitalize }}</option>
+					   </select>
+
+				</div> 
+
+         	</div>
+         	<button style="margin-top:20px;margin-bottom: 15px;" type="submit" class="btn btn-success" [disabled]="!chooseCompanyForm.form.valid"><i class="fas fa-home"></i> Continuar
+			</button>
+<!-- 			<button type="button" class="btn btn-outline-danger">
+
+				<i class="fas fa-ban"></i>
+				Salir
+			</button> -->	
+		</div>
+
+    </form>
+

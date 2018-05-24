@@ -1,0 +1,47 @@
+<form (ngSubmit)="onSubmit()" #searchDatesForm="ngForm" class="form-horizontal" role="form" enctype="multipart/form-data">
+
+    <div class="modal-header">
+      <h4 class="modal-title" style="margin:0 auto;">Buscar entre fechas</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+             name="fromDate" [(ngModel)]="model.fromDate" ngbDatepicker #d="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+          <i class="fa fa-calendar" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+   <div class="form-group">
+	    <div class="input-group">
+	      <input class="form-control" placeholder="yyyy-mm-dd"
+	             name="toDate" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker">
+	      <div class="input-group-append">
+	        <button class="btn btn-outline-secondary" (click)="h.toggle()" type="button">
+	          <i class="fa fa-calendar" aria-hidden="true"></i>
+	        </button>
+	      </div>
+	    </div>
+  </div>
+
+
+
+
+    </div>
+    <div class="modal-footer">
+		<input type="submit" class="btn btn-primary" [disabled]="!searchDatesForm.form.valid||(!searchDatesForm.form.dirty&&!searchDatesForm.form.touched)" value="Aceptar">
+      	<button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss()">Cerrar</button>
+    </div>
+
+</form>
+

@@ -1,0 +1,189 @@
+<form (ngSubmit)="onSubmit()" #buyForm="ngForm" class="form-horizontal" role="form" enctype="multipart/form-data">
+
+    <div class="modal-header">
+      <h4 class="modal-title" style="margin:0 auto;">Registrar Compra</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+					   <select [disabled]="modalData?.update" class="form-control" name="weightUnit" [(ngModel)]="model.weightUnit" #weightUnit="ngModel">
+					   		<option value="gr">Gr</option>
+					   		<option value="oz">Oz</option>
+					   </select>
+				  </div>
+				<input [disabled]="modalData?.update" type="number" [(ngModel)]="model.cantidad" #cantidad="ngModel" class="form-control" customMin="0" name="cantidad" placeholder="Cantidad" aria-label="Cantidad" aria-describedby="basic-addon1" customMin="0"  required>
+				</div> 
+				<div class="alert alert-danger errorMsg" *ngIf="cantidad.errors && cantidad.touched">
+					<div *ngIf="cantidad.errors.required">
+					Ingrese cantidad
+					</div>
+					<div *ngIf="cantidad.errors.customMin">
+					Cantidad no puede ser negativa.
+					</div> 				
+				</div> 		
+         	</div>
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				   <select [disabled]="modalData?.update" class="form-control" [(ngModel)]="model.account" #account="ngModel" name="account">
+					<option *ngFor="let account of account_types" 
+					    [ngValue]="account">
+					  {{ account.account_type?.currency_nick | capitalize }}
+					</option>
+				   </select>
+				  </div>
+				  <input [disabled]="modalData?.update" type="number" class="form-control" [(ngModel)]="model.precio" #precio="ngModel" customMin="0" name="precio" placeholder="Precio Unitario" aria-label="precioUnitario" aria-describedby="basic-addon1" required>
+
+				</div> 
+				<div class="alert alert-danger errorMsg" *ngIf="precio.errors && precio.touched">
+					<div *ngIf="precio.errors.required">
+					Ingrese precio unitario.
+					</div>
+					<div *ngIf="precio.errors.customMin">
+					Precio no puede ser negativo.
+					</div> 				
+				</div>     		
+         	</div>
+
+
+         	<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon3">
+				    ¿Fundido? <input (ngModelChange)="verifyFundidoData()" [(ngModel)]="model.fundido" #fundido="ngModel" name="fundido" type="checkbox" style="margin-left: 5px;" aria-label="Checkbox for following text input">
+
+					</span>
+				  </div>
+				  <input [disabled]="!model.fundido" [required]="model.fundido" type="number" [(ngModel)]="model.pesoPost" #pesoPost="ngModel" name="pesoPost" class="form-control" customMin="0"  customMax="{{model.cantidad}}" placeholder="Peso despues de fundicion" id="basic-url" aria-describedby="basic-addon3">
+					<div class="input-group-append">
+						<span class="input-group-text">{{model.weightUnit||'-'}}</span>
+					</div>
+				</div>
+					<div *ngIf="pesoPost.errors && pesoPost.errors.required && pesoPost.touched"
+					 class="alert alert-danger errorMsg">
+					Ingrese peso despues de fundicion.
+					</div>
+					<div *ngIf="pesoPost.errors && pesoPost.errors.customMax && pesoPost.touched"
+					 class="alert alert-danger errorMsg">
+						El peso post fundicion no puede ser mayor a la cantidad original ( {{model.cantidad | number: '1.2-4'}} {{model.account.account_type?.currency_nick | capitalize }})
+					</div>
+					<div *ngIf="pesoPost.errors && pesoPost.errors.customMin && pesoPost.touched"
+					 class="alert alert-danger errorMsg">
+						Minimo debe ser cero
+					</div> 
+         	</div>
+
+         <div class="form-group">
+			<div class="input-group mb-3">
+			  <input [disabled]="!model.fundido" [required]="model.fundido" type="number" [(ngModel)]="model.meltCost" #meltCost="ngModel"  customMin="0" name="meltCost" class="form-control"  placeholder="Costo de fundicion" id="basic-url" aria-describedby="basic-addon3">
+				<div class="input-group-append">
+					<span class="input-group-text">{{model.account.account_type?.currency_nick|capitalize}}</span>
+				</div>
+			</div> 
+			<div class="alert alert-danger errorMsg" *ngIf="meltCost.errors && meltCost.touched">
+				<div *ngIf="meltCost.errors.required">
+				Ingrese costo de evaluacion.
+				</div>
+				<div *ngIf="meltCost.errors.customMin">
+				Costo no puede ser negativo.
+				</div> 				
+			</div>        	
+         </div>
+
+
+
+
+         <div class="form-group">
+			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+			    <span class="input-group-text" id="basic-addon3">
+			    Legal? <input (ngModelChange)="verifyLegalData()" type="checkbox" [(ngModel)]="model.legal" #legal="ngModel"  name="legal" style="margin-left: 5px;" aria-label="Checkbox for following text input">
+
+				</span>
+			  </div>
+			  <input [disabled]="!model.legal" [required]="model.legal" type="number" [(ngModel)]="model.evalCost" #evalCost="ngModel" name="evalCost" class="form-control"  customMin="0" placeholder="Costo de evaluacion" id="basic-url" aria-describedby="basic-addon3">
+			  <!-- <input type="number" class="form-control"  placeholder="Peso despues de fundicion" id="basic-url" aria-describedby="basic-addon3"> -->
+			<!--   <button class="btn btn-secondary">Cargar imagen de certificado <i class="fa fa-file"></i></button> -->
+				<div class="input-group-append">
+					<span class="input-group-text">{{model.account.account_type?.currency_nick||'-'|capitalize}}</span>
+				</div>
+					<div class="alert alert-danger errorMsg" *ngIf="evalCost.errors && evalCost.touched">
+						<div *ngIf="evalCost.errors.required">
+						Ingrese costo de evaluacion.
+						</div>
+						<div *ngIf="evalCost.errors.customMin">
+						Costo no puede ser negativo.
+						</div> 				
+					</div> 
+			</div>
+         </div>
+
+
+         <div class="form-group">
+			<div class="input-group mb-3">
+<!-- 			  <div class="input-group-prepend">
+			    <span class="input-group-text" id="basic-addon3">
+			    Legal? <input (ngModelChange)="verifyLegalData()" type="checkbox" [(ngModel)]="model.legal" #legal="ngModel"  name="legal" style="margin-left: 5px;" aria-label="Checkbox for following text input">
+
+				</span>
+			  </div> -->
+			  <input [disabled]="!model.legal" [required]="model.legal" type="number" [(ngModel)]="model.pesoPostLegal" #pesoPostLegal="ngModel" name="pesoPostLegal" class="form-control"  customMin="0" placeholder="Peso post legalizacion" id="basic-url" aria-describedby="basic-addon3">
+			  <!-- <input type="number" class="form-control"  placeholder="Peso despues de fundicion" id="basic-url" aria-describedby="basic-addon3"> -->
+			<!--   <button class="btn btn-secondary">Cargar imagen de certificado <i class="fa fa-file"></i></button> -->
+				<div class="input-group-append">
+					<span class="input-group-text">{{model.weightUnit||'-'|capitalize}}</span>
+				</div>
+					<div class="alert alert-danger errorMsg" *ngIf="pesoPostLegal.errors && pesoPostLegal.touched">
+						<div *ngIf="pesoPostLegal.errors.required">
+						Ingrese peso despues de legalizacion
+						</div>
+						<div *ngIf="pesoPostLegal.errors.customMin">
+						No puede ser negativo.
+						</div> 				
+					</div> 
+			</div>
+         </div>
+
+
+		<div class="form-group" *ngIf="model.legal">
+			<hr>
+			<label >Comprobante:</label>
+			<div class="input-group mb-3">
+				<input type="file" name="comprobante">
+			</div>
+		</div>
+
+		<div *ngIf="model.pesoPost&&model.cantidad&&model.fundido">
+			<hr>
+			<label><strong>Perdida por fundicion:</strong></label><span class="bg-warning" style="margin-left: 15px;">{{model.cantidad-model.pesoPost | number : '1.2-2'}} {{model.weightUnit}} <i class="fas fa-arrow-right"></i> {{100*((model.cantidad-model.pesoPost)/model.cantidad) | number : '1.2-2'}} % de perdida</span>
+		</div>
+
+		<div *ngIf="precio.valid&&cantidad.valid"><!-- *ngIf="buyForm.form.valid" -->
+			<hr>
+			<label><strong>Costo real por {{model.weightUnit}}:</strong></label>
+			<span style="margin-left: 15px;">
+				<!-- {{model.currency}} {{ (( (model.evalCost||0+(model.precio||0*model.cantidad||0)) / (model.pesoPost||model.cantidad)) )| number : '1.2-2'}} / {{model.weightUnit}}-->
+
+				{{model.account.account_type?.currency_nick|capitalize}} {{realPrice(buyForm) | number : '1.2-2'}} / {{model.weightUnit}}
+			</span>
+			<hr>
+		</div>
+		<div class="total">
+			<label><strong>Costo total:</strong></label>
+			<span style="margin-left: 15px;">
+				{{model.account.account_type?.currency_nick|capitalize}} {{ (model.pesoPost||model.cantidad)*realPrice(buyForm) | number : '1.2-2'}}
+			</span>
+		</div>
+    </div>
+    <div class="modal-footer">
+		<input type="submit" class="btn btn-primary" [disabled]="!buyForm.form.valid||(!buyForm.form.dirty&&!buyForm.form.touched)" value="Aceptar">
+      	<button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Cerrar</button>
+    </div>
+
+</form>
+

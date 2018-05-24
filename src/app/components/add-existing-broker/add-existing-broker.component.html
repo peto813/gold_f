@@ -1,0 +1,71 @@
+	
+    <form  (ngSubmit)="onSubmit(addexistingBrokerForm)" #addexistingBrokerForm="ngForm" class="form-horizontal" role="form" >
+    			<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        			<span aria-hidden="true">&times;</span>
+      			</button>
+    		<div class="modal-header">
+    			<h3 style="poition:absolute;margin: 0 auto;" class="modal-title">Busqueda Broker</h3>
+
+    		</div>
+
+<div class="modal-body">
+
+
+ 			<div class="form-group">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">
+							<i class="fa fa-user"></i>
+						</span>
+				  </div>
+
+				<input  type="text" [(ngModel)]="model.search" #search="ngModel" class="form-control" name="search" placeholder="Usuario, correo electronico o cedula"  required>
+				</div> 
+<!-- 				<div *ngIf="search?.errors" class="errorField">
+					<div *ngIf="search.errors.required && search.touched"
+						 class="alert alert-danger errorMsg">
+						Ingrese usuario
+					</div>
+					<div *ngIf="search.errors.userExists && search.touched"
+						 class="alert alert-danger errorMsg">
+						Usuario invalido
+					</div>
+				</div>  -->   		
+         	</div>
+
+         	<div *ngIf="userFound">
+         		<p class="text-center bold">¡Usuario ubicado!</p>
+				<div class="table-responsive-lg">
+					<table class="table table-bordered table-striped">
+					  <thead>
+					    <tr>
+					<!--     	<th scope="col">-</th>
+					 -->    
+					 		<th scope="col">Accion</th>	
+					 		<th scope="col">Usuario</th>
+					 		<th scope="col">Nombre</th>
+					      	<th scope="col">Correo electronico</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  	<tr>
+					  		<td><button type="button" (click)="incorporate(user)" [disabled]="">Afiliar</button></td>
+						  	<td>{{user.username}}</td>
+						  	<td>{{user.first_name | capitalize}} {{user.last_name | capitalize}}</td>
+						  	<td>{{user.email}}</td>	  		
+					  	</tr>
+					  </tbody>
+					</table>
+				</div>
+         	</div>
+			 <div class="text-center" *ngIf="!userFound&&addexistingBrokerForm.valid&&addexistingBrokerForm.dirty&&submitted">
+         		<code><strong>No hay resultados de esta busqueda</strong></code>
+         	</div>
+</div>
+
+        <div class="modal-footer">
+        	<input [disabled]="!addexistingBrokerForm.form.valid&&submitted==false" type="submit" class="btn btn-primary float-sm-right btn-lg" value="Aceptar">
+        	<button type="button" class="btn btn-outline-dark btn-lg" (click)="activeModal.close()">Cerrar</button>
+        </div>
+    </form>
+

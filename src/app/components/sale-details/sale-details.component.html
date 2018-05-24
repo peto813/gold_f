@@ -1,0 +1,82 @@
+	<div class="modal-header">
+      <h4 class="modal-title">Detalles de Venta</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+
+<div class="table-responsive-lg">
+<table class="table table-bordered table-striped">
+
+  <tbody>
+  	<tr>
+  		<td>Ejecutada por:</td>
+  		<td>{{model.user_data.full_name}}</td>
+  	</tr>
+	<tr>
+		<td><strong>Cantidad Bruta:</strong></td>
+		<td>
+			{{modalData.cantidad | number : '1.2-2'}} {{modalData.weightUnit}}
+		</td>
+	</tr>
+
+	<tr class="table-info" *ngIf="modalData.fundido==true">
+		<td><strong>Cantidad Neta:</strong></td>
+		<td>
+			<u>
+				{{modalData.pesoPost | number : '1.2-2'}} {{modalData.weightUnit}} ( {{100*((modalData.pesoPost-modalData.cantidad)/modalData.cantidad) | number : '1.2-2'}} %)
+			</u>
+			
+		</td>
+	</tr>
+
+	<tr *ngIf="modalData.fundido==true">
+		<td><strong>Costo Fundicion:</strong></td>
+		<td>
+			{{modalData.currency | capitalize}} {{modalData.meltCost | number : '1.2-2'}}
+		</td>
+	</tr>
+
+	<tr *ngIf="modalData.legal==true">
+		<td><strong>Costo Legalizacion:</strong></td>
+		<td>
+			{{modalData.currency | capitalize}} {{modalData.evalCost | number : '1.2-2'}}
+		</td>
+	</tr>
+
+	<tr>
+		<td><strong>Precio unitario venta:</strong></td>
+		<td>
+			{{modalData.currency | capitalize}} {{ modalData.precio | number : '1.2-2'}}
+		</td>
+	</tr>
+
+
+<!-- 	<tr>
+		<td><strong>Precio unitario real / {{modalData.weightUnit}}:</strong></td>
+		<td>
+			{{modalData.currency | capitalize}} {{realPrice() | number : '1.2-2'}} ( <span *ngIf="realPrice()>0">+</span> {{100*(realPrice()-modalData.precio)/modalData.precio | number : '1.2-2'}} %)
+		</td>
+	</tr> -->
+
+
+	<tr class="table-warning bold">
+		<td><strong>Total:</strong></td>
+		<td>
+			<b>{{modalData.currency | capitalize}} {{modalData.precio * (modalData.pesoPost||modalData.cantidad) | number : '1.2-2'}}</b>
+		</td>
+	</tr>
+
+	  </tbody>
+</table>
+</div>
+
+    </div>
+
+    <div class="modal-footer">
+      	<button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cerrar</button>
+    </div>
+
+

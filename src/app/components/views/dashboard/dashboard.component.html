@@ -1,0 +1,9 @@
+<div class="main-content">
+	<div class="row fistrow">
+	    <div *ngFor="let account of accounts" class="col-sm">
+	    	<p class="acccount">{{account?.account_type.currency_nick}}: {{account?.balance | number : '1.2-2'}}</p>
+	    </div>
+	</div>
+	<app-transactions-table (updateBalance)="updateAccounts($event)" [table_data]="table_data"></app-transactions-table>
+</div>
+

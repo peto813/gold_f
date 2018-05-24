@@ -1,0 +1,66 @@
+<div class="row top-row">
+		<div class="col-12 col-sm-12">
+			<h3 class="text-center">Brokers en {{userService.getCompanyData().name | capitalizeach }}</h3>
+			<hr>
+    		<h6 class="text-center"><strong>Atencion: </strong> Luego de agregar un broker puede abonar a sus carteras la cantidad que desee. </h6>
+    		<h6 class="text-center">( Estara activo luego de que el broker corrobore que recibio el monto)</h6>
+		</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-12 col-sm-12">
+
+	    <div class="btn-toolbar table-control" role="toolbar" aria-label="Toolbar with button groups">
+	        <div class="btn-group mr-2" role="group" aria-label="First group">
+	        	<button type="button" class="btn btn-success" (click)="registerBroker()">Registrar nuevo</button>
+	        	<button type="button" class="btn btn-info"  (click)="affiliateBroker()">Afiliar existente</button>
+	    	</div>
+	    </div>
+
+		<div class="table-responsive-lg">
+			<table class="table table-bordered table-striped">
+			  <thead>
+			    <tr>
+			    	<th scope="col">ID</th>
+			    	<th scope="col">Accion</th>
+			      	<th scope="col">Nombre</th>
+			      	<th scope="col">Creado</th>
+			      	<th scope="col">Locacion</th>
+			        <th scope="col">Movil</th>
+			      	<th scope="col">Oficina</th>
+			    	<th scope="col">Otro</th>
+			      	<th scope="col">Balance Inicial</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+
+			<tr *ngFor="let broker of table_data">
+
+			    <td>{{broker.userprofile.id_number}}</td>
+			    	<td>
+					    <div ngbDropdown class="d-inline-block">
+					      <span ngbDropdownToggle><i title="Accion" class="fas fa-cog fa-2x"></i></span>
+					      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+							<button class="dropdown-item" (click)="balances(broker)">Balances</button>
+					        <button class="dropdown-item" (click)="remBroker(broker)">Desincorporar</button>
+					        <button class="dropdown-item" (click)="add_balance(broker)">Agregar Balance</button>
+					      </div>
+					    </div>  		
+			    	</td>
+			    <td>{{broker.first_name | capitalize}} {{broker.last_name | capitalize}} </td>
+			   <td>
+			   	{{ getRole(broker).created | date: medium   }}
+			   </td>
+			    <td>{{broker.userprofile.location | capitalize }}</td>
+			    <td>{{broker.userprofile.mobile || 'N/A'}}</td>
+			    <td>{{broker.userprofile.office || 'N/A'}}</td>
+			    <td>{{broker.userprofile.other || 'N/A'}}</td>
+			    <td>{{broker.userprofile.gold_balance}} gr</td>
+			</tr>
+
+			  </tbody>
+			</table>
+		</div>
+		
+	</div>
+</div>

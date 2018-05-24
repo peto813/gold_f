@@ -1,0 +1,123 @@
+	<div class="modal-header">
+      <h4 class="modal-title">Detalles de transaccion</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+
+<div class="table-responsive-lg">
+<table class="table table-bordered table-striped">
+
+  <tbody>
+  	<tr>
+  		<td>Ejecutada por:</td>
+  		<td>{{model.user_data.full_name}}</td>
+  	</tr>
+	<tr>
+		<td><strong>Cantidad Bruta:</strong></td>
+		<td>
+         	<div class="form-group">
+				<div class="input-group mb-3">
+<!-- 					<label>{{model.cantidad}}</label> -->
+					<input disabled type="text" class="form-control input-sm" [value]="quantAlt | number : '1.2-4'">
+					<div class="input-group-append">
+						<select class="form-control" [(ngModel)]="model.weightUnit" #precio="ngModel"  name="weightUnit">
+							<option value="gr">Gr</option>
+							<option value="kg">kg</option>
+							<option value="oz">oz</option>
+						</select>
+<!-- 						<span class="input-group-text">/ {{model.weightUnit||'-'}}</span> -->
+					</div>
+				</div>
+         	</div>
+			<!-- {{model.cantidad | number : '1.2-2'}} {{model.weightUnit}} -->
+		</td>
+	</tr>
+
+	<tr class="table-info" *ngIf="model.fundido==true">
+		<td><strong>Cantidad Neta:</strong></td>
+		<td>
+			<u>
+				{{model.pesoPost | weightConvert : 'gr' : model.weightUnit | number : '1.2-2'}} {{model.weightUnit}} ( {{100*((model.pesoPost-model.cantidad)/model.cantidad) | number : '1.2-2'}} %)
+			</u>
+			
+		</td>
+	</tr>
+
+	<tr *ngIf="model.fundido==true">
+		<td><strong>Costo Fundicion:</strong></td>
+		<td>
+			{{model.currency | capitalize}} {{model.meltCost | number : '1.2-2'}}
+		</td>
+	</tr>
+
+	<tr *ngIf="model.legal==true">
+		<td><strong>Costo Legalizacion:</strong></td>
+		<td>
+			{{model.currency | capitalize}} {{model.evalCost | number : '1.2-2'}}
+		</td>
+	</tr>
+
+	<tr>
+		<td><strong>Precio unitario:</strong></td>
+		<td>
+			{{model.currency | capitalize}} {{getPrice(model.precio)}}
+		</td>
+	</tr>
+
+
+	<tr>
+		<td><strong>Precio unitario real / {{model.weightUnit}}:</strong></td>
+		<td>
+			{{model.currency | capitalize}} {{getPrice(realPrice())}} ( <span *ngIf="realPrice()>0">+</span> {{100*(realPrice()-model.precio)/model.precio | number : '1.2-2'}} %)
+		</td>
+	</tr>
+
+
+	<tr class="table-warning bold">
+		<td><strong>Total:</strong></td>
+		<td>
+			{{model.currency | capitalize}} {{realPrice() * (model.pesoPost||model.cantidad) | number : '1.2-2'}}
+		</td>
+	</tr>
+
+	  </tbody>
+</table>
+</div>
+
+
+
+
+    	<!-- <h3 class="text-center">Compra</h3>
+    	<p><strong>Cantidad:</strong> {{model.cantidad}} {{model.weightUnit}} </p>
+    	<p><strong>Precio:</strong> {{model.currency|capitalize}} {{model.precio | number : '1.2-2'}} / {{model.weightUnit}}</p>
+    	
+    	<div *ngIf ="model.fundido||model.legal">
+    		<h5>Gastos extra:</h5>
+
+    		<div class="fundicion" *ngIf ="model.fundido">
+		    	<p *ngIf ="model.fundido">
+		    		Fundicion: {{model.currency|capitalize}}  {{model.meltCost}}
+		    	</p>
+	    		<p>Remanente: X</p>  			
+    		</div>
+
+    		<div class="legalizacion" *ngIf ="model.legal">
+		    	<p>
+		    		Legalizacion: {{model.currency|capitalize}} {{model.meltCost}}
+		    	</p>
+    		</div>
+
+    	</div>
+
+    	<hr>
+    	<h3>Venta:</h3> -->
+    </div>
+
+    <div class="modal-footer">
+      	<button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cerrar</button>
+    </div>
+
+
