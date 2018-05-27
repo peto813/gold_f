@@ -115,8 +115,8 @@
           <i class="fas fa-certificate"></i>
         </span>
       </td>
-      <td [colSpan]="getSpan(transaction)">{{transaction.precio | number : '1.2-2'}} {{transaction.account.account_type?.currency_nick | capitalize}}</td>
-    	<td *ngIf="transaction.tipo!=='abono'">{{transaction.currency | capitalize}} {{transaction.precio*(transaction.cantidad | weightConvert: 'gr' : transaction.weightUnit) | number : '1.2-2'}}</td>
+      <td [colSpan]="getSpan(transaction)">{{transaction.cantidad | number : '1.2-2'}} gr</td>
+    	<td *ngIf="transaction.tipo!=='abono'">{{transaction.account.account_type?.currency_nick | capitalize}} {{transaction.precio*(transaction.cantidad | weightConvert: 'gr' : transaction.weightUnit) | number : '1.2-2'}}</td>
     	<td *ngIf="transaction.tipo!=='abono'"><strong>{{getSign(transaction)}}</strong></td>
     	<td *ngIf="transaction.tipo!=='abono'">{{transaction.balance}} gr</td>
 </tr>
